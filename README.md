@@ -66,6 +66,11 @@ src/
 
 <img width="1470" height="956" alt="Checkout" src="https://github.com/user-attachments/assets/ec50c484-70cf-42e3-afd6-0452014fbea9" />
 
+### About Page
+
+<img width="1470" height="956" alt="About" src="https://github.com/user-attachments/assets/c5ddc6dc-b72d-4a53-b673-2efdbe33e860" />
+
+
 ## Author
 
 **Manas Aditya Mhatre**
