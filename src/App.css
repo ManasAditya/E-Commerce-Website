@@ -1698,3 +1698,111 @@ margin-left:0;
 }
 
 }
+/* ========================= */
+/* CHECKOUT + ORDERS UI */
+/* ========================= */
+
+.checkout,
+.orders {
+  padding: 80px;
+  min-height: 100vh;
+}
+
+/* Headings */
+.checkout h2,
+.orders h2 {
+  font-size: 48px;
+  font-weight: 900;
+  text-align: center;
+  margin-bottom: 30px;
+  background: linear-gradient(90deg, #fff, #72a7ff, #9d7cff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ========================= */
+/* CHECKOUT BOX */
+/* ========================= */
+
+.checkout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+
+.checkout input,
+.checkout textarea {
+  width: 420px;
+  max-width: 100%;
+  padding: 14px 18px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: #111;
+  color: white;
+  outline: none;
+}
+
+.checkout textarea {
+  min-height: 100px;
+  resize: none;
+}
+
+.checkout button {
+  width: 420px;
+  max-width: 100%;
+  padding: 15px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(90deg, #2563eb, #8b5cf6);
+  color: white;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* ========================= */
+/* ORDERS GRID (if you have orders page) */
+/* ========================= */
+
+.orderGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 25px;
+  margin-top: 30px;
+}
+
+.orderCard {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 20px;
+  padding: 20px;
+  backdrop-filter: blur(10px);
+  transition: 0.3s;
+}
+
+.orderCard:hover {
+  transform: translateY(-5px);
+  border-color: rgba(37,99,235,0.4);
+}
+
+.orderCard p {
+  margin: 8px 0;
+  color: #bdbdbd;
+}
+
+.orderTotal {
+  margin-top: 12px;
+  font-weight: bold;
+  color: white;
+}
+
+/* ========================= */
+/* EMPTY STATE */
+/* ========================= */
+
+.empty {
+  text-align: center;
+  color: #aaa;
+  margin-top: 40px;
+}

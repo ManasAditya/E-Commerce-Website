@@ -1,78 +1,92 @@
+import { supabase } from "../supabase";
+
 function ProductCard({
 
-image,
+  id,
+  image,
+  name,
+  price,
+  rating,
+  badge
 
-name,
+}) {
 
-price,
+  async function addToCart() {
 
-rating,
+    // Check if product already exists in cart
+    const { data } = await supabase
+      .from("cart")
+      .select("*")
+      .eq("product_id", id)
+      .maybeSingle();
 
-badge
+    if (data) {
 
-}){
+      await supabase
+        .from("cart")
+        .update({
+          quantity: data.quantity + 1,
+        })
+        .eq("id", data.id);
 
-return(
+    } else {
 
-<div className="productCard">
+      await supabase
+        .from("cart")
+        .insert({
+          product_id: id,
+          quantity: 1,
+        });
 
-<div className="badge">
+    }
 
-{badge}
+    alert("Product Added To Cart ✅");
+  }
 
-</div>
+  return (
 
-<div className="wishlist">
+    <div className="productCard">
 
-♡
+      <div className="badge">
+        {badge}
+      </div>
 
-</div>
+      <div className="wishlist">
+        ♡
+      </div>
 
-<img
+      <img
+        src={image}
+        alt={name}
+      />
 
-src={image}
+      <h2>
+        {name}
+      </h2>
 
-alt={name}
+      <p className="rating">
+        {rating}
+      </p>
 
-/>
+      <h3>
+        ₹{Number(price).toLocaleString("en-IN")}
+      </h3>
 
-<h2>
+      <div className="buttons">
 
-{name}
+        <button onClick={addToCart}>
+          Add to Cart
+        </button>
 
-</h2>
+        <button>
+          Buy Now
+        </button>
 
-<p className="rating">
+      </div>
 
-{rating}
+    </div>
 
-</p>
-
-<h3>
-
-{price}
-
-</h3>
-
-<div className="buttons">
-
-<button>
-
-Add to Cart
-
-</button>
-
-<button>
-
-Buy Now
-
-</button>
-
-</div>
-
-</div>
-
-)
+  );
 
 }
 

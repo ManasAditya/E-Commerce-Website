@@ -1,11 +1,43 @@
 import { Link, useLocation } from "react-router-dom";
-
+import { useEffect, useState } from "react";
+import { supabase } from "../supabase";
+import { useNavigate } from "react-router-dom";
 function Navbar() {
   const location = useLocation();
+  const [cartCount, setCartCount] = useState(0);
+  const navigate = useNavigate();
 
   const isActive = (path) => {
     return location.pathname === path ? "activeLink" : "";
   };
+
+  useEffect(() => {
+    fetchCartCount();
+
+    // optional live refresh when tab changes
+    const interval = setInterval(() => {
+      fetchCartCount();
+    }, 2000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  async function fetchCartCount() {
+    const { data, error } = await supabase
+      .from("cart")
+      .select("quantity");
+
+    if (error) {
+      console.log(error);
+      return;
+    }
+
+    const total = data.reduce((sum, item) => {
+      return sum + item.quantity;
+    }, 0);
+
+    setCartCount(total);
+  }
 
   return (
     <header className="navbar">
@@ -16,31 +48,19 @@ function Navbar() {
 
       <nav className="navMenu">
 
-        <Link
-        to="/"
-          className={isActive("/")}
-        >
+        <Link to="/" className={isActive("/")}>
           Home
         </Link>
 
-        <Link
-        to="/products"
-          className={isActive("/products")}
-        >
+        <Link to="/products" className={isActive("/products")}>
           Products
         </Link>
 
-        <Link
-        to="/cart"
-          className={isActive("/cart")}
-        >
+        <Link to="/cart" className={isActive("/cart")}>
           Cart
         </Link>
 
-        <Link
-        to="/about"
-          className={isActive("/about")}
-        >
+        <Link to="/about" className={isActive("/about")}>
           About
         </Link>
 
@@ -52,12 +72,14 @@ function Navbar() {
           🔍
         </button>
 
-        <button className="cartBtn">
-          🛒
-          <span className="cartCount">
-            0
-          </span>
-        </button>
+        <Link to="/cart">
+          <button className="cartBtn">
+            🛒
+            <span className="cartCount">
+              {cartCount}
+            </span>
+          </button>
+        </Link>
 
         <button className="shopNowBtn">
           Shop Now

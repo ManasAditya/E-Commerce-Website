@@ -1,150 +1,79 @@
+import { useEffect, useState } from "react";
 import ProductCard from "./ProductCard";
+import { supabase } from "../supabase";
 
 function Products() {
 
-const products=[
+  const [products, setProducts] = useState([]);
+  const [search, setSearch] = useState("");
 
-{
-id:1,
-name:"iPhone 16 Pro",
-price:"₹1,35,999",
-rating:"★★★★★",
-badge:"NEW",
-image:"https://www.apple.com/newsroom/images/2024/09/apple-debuts-iphone-16-pro-and-iphone-16-pro-max/tile/Apple-iPhone-16-Pro-hero-geo-240909-lp.jpg.news_app_ed.jpg"
-},
+  useEffect(() => {
+    fetchProducts();
+  }, []);
 
-{
-id:2,
-name:"MacBook Air M2",
-price:"₹1,09,999",
-rating:"★★★★★",
-badge:"HOT",
-image:"https://www.notebookcheck.net/fileadmin/_processed_/4/2/csm_IMG_9062_c665417966.jpg"
-},
+  async function fetchProducts() {
 
-{
-id:3,
-name:"AirPods Pro",
-price:"₹24,999",
-rating:"★★★★★",
-badge:"SALE",
-image:"https://www.techhive.com/wp-content/uploads/2023/04/AirPods-Pro-2nd-gen-hero.jpg?quality=50&strip=all"
-},
+    const { data, error } = await supabase
+      .from("products")
+      .select("*")
+      .order("id", { ascending: true });
 
-{
-id:4,
-name:"Apple Watch",
-price:"₹45,999",
-rating:"★★★★☆",
-badge:"TRENDING",
-image:"https://www.apple.com/assets-www/en_IN/watch/02_value_props/small/education_918f650ff_2x.jpg"
-},
+    if (error) {
+      console.log(error);
+      return;
+    }
 
-{
-id:5,
-name:"Gaming Laptop",
-price:"₹1,39,999",
-rating:"★★★★★",
-badge:"PRO",
-image:"https://rog.asus.com/media/1725939492117.jpg"
-},
+    setProducts(data);
+  }
 
-{
-id:6,
-name:"Mechanical Keyboard",
-price:"₹8,999",
-rating:"★★★★☆",
-badge:"NEW",
-image:"https://thegadgetflow.com/wp-content/uploads/2021/05/Top-5-mechanical-keyboards-for-your-workspace-blog-featured.jpeg"
-},
+  const filteredProducts = products.filter((item) =>
+    item.name.toLowerCase().includes(search.toLowerCase())
+  );
 
-{
-id:7,
-name:"Gaming Headset",
-price:"₹5,000",
-rating:"★★★★★",
-badge:"NEW",
-image:"https://dlcdnwebimgs.asus.com/gain/4BB18AEF-347E-4DB6-B78C-C0FFE1F20385/w750/h470/fwebp"
-},
+  return (
 
-{
-id:8,
-name:"Console",
-price:"₹5,999",
-rating:"★★★★☆",
-badge:"NEW",
-image:"https://static.vecteezy.com/system/resources/previews/066/608/774/large_2x/nextgen-console-controller-in-colorful-smoke-immersive-gaming-experience-technology-and-entertainment-cool-design-free-photo.jpg"
-},
+    <div className="productsPage">
 
-{
-id:9,
-name:"Mouse",
-price:"₹4,999",
-rating:"★★★★★",
-badge:"NEW",
-image:"https://assetsio.gnwcdn.com/g502x_f9QuuM8.jpeg?width=690&quality=85&format=jpg&dpr=3&auto=webp"
-}
-];
+      <h1 className="productsTitle">
+        Featured Collection
+      </h1>
 
-return(
+      <p className="productsSubtitle">
+        Designed for creators, gamers and innovators.
+      </p>
 
-<div className="productsPage">
+      <div className="searchBox">
 
-<h1 className="productsTitle">
+        <input
+          type="text"
+          placeholder="Search premium products..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
 
-Featured Collection
+      </div>
 
-</h1>
+      <div className="productGrid">
 
-<p className="productsSubtitle">
+        {filteredProducts.map((item) => (
 
-Designed for creators, gamers and innovators.
+          <ProductCard
+            key={item.id}
+            id={item.id}
+            name={item.name}
+            price={item.price}
+            rating={item.rating}
+            badge={item.badge}
+            image={item.image}
+          />
 
-</p>
+        ))}
 
-<div className="searchBox">
+      </div>
 
-<input
+    </div>
 
-type="text"
-
-placeholder="Search premium products..."
-
- />
-
-</div>
-
-<div className="productGrid">
-
-{
-
-products.map((item)=>(
-
-<ProductCard
-
-key={item.id}
-
-name={item.name}
-
-price={item.price}
-
-rating={item.rating}
-
-badge={item.badge}
-
-image={item.image}
-
-/>
-
-))
-
-}
-
-</div>
-
-</div>
-
-)
+  );
 
 }
 
